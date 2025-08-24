@@ -1,0 +1,272 @@
+
+
+
+<%@page import="java.util.List"%>
+<%@page import="cn.tech.dao.ProductDao"%>
+<%@page import="cn.tech.connection.DBCon"%>
+<%@page import="cn.tech.model.product"%>
+
+<%@page import= "cn.tech.model.User"%>
+<% 
+   User auth=(User) request.getSession().getAttribute("auth");
+   if(auth!=null)
+   {
+   request.setAttribute("auth",auth);
+}
+
+ProductDao pd=new ProductDao(DBCon.getConnection());
+List<product>products=pd.getAllProducts(); 
+
+%> 
+
+
+<!DOCTYPE html>
+
+<html lang="en" style=" scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <section id="header">
+<a href="# "class="logo"><img src="img/logo.png" alt="logo" id="logo"></a>
+<div>
+    <ul id="navbar" >
+  <li><a class="active" href="main.jsp">Home</a></li>
+  <%
+      if(auth!=null)
+  {%>
+   <li><a  href="orders.jsp">Orders</a></li>
+    <li><a  href="logout">Logout</a></li>
+  <%}
+      else{
+  %>
+    <li><a  href="login.jsp">Login</a></li>
+     <li><a  href="register.jsp">Registration</a></li>
+  <%}
+  %>
+  <li><a  href="blog.jsp">Blog</a></li>
+  <li><a href="shop.jsp">shop</a></li>
+  <li><a href="about.jsp">about</a></li>
+  <li><a href="contact.jsp">contact</a></li>
+  
+ 
+  
+  <li id="lg-cart"><a href="cart.jsp" ><i class="fa-solid fa-cart-shopping"></i></a></li>
+  <a href="#" id="close"> <i class="fa-solid fa-xmark"></i></a>
+    </ul>
+</div>
+<div id="mobile">
+<i id="bar" class="fas fa-outdent"></i>
+<a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+</div>
+ 
+    </section>
+    <section id="hero">
+<h4 style="font-size: 20px;
+color: #222; padding-bottom: 15px;">
+Trade-in-offer</h4>
+<h2 style="font-size: 46px;
+line-height: 54px;
+color:#7CA982;">Super value deals</h2>
+<h1 style="font-size: 50px;
+line-height: 64px;
+color: #222;">On all products</h1>
+<p 
+style="font-size: 16px;
+color: #465b52;
+margin: 15px 0 20px 0;">save more with coupons & upto 70% off</p>
+<button>shop now</button>
+    </section>
+
+ 
+  <section id="feature" class="feature-box">
+
+             
+<div class="box" id="box1">
+    <img src="img/f1.png" alt="">
+    <h6>Free shipping</h6>
+</div>
+
+<div class="box" id="box2">
+    <img src="img/f2.png" alt="">
+    <h6>Online order</h6>
+</div>
+
+<div class="box" id="box3">
+    <img src="img/f3.png" alt="">
+    <h6>Save money</h6>
+</div>
+
+<div class="box" id="box4">
+    <img src="img/f4.png" alt="">
+    <h6>Promotions</h6>
+</div>
+
+<div class="box" id="box5">
+    <img src="img/f5.png" alt="">
+    <h6>Happy sell</h6>
+</div>
+
+<div class="box" id="box6">
+    <img src="img/f6.png" alt="">
+    <h6>24/7 Support</h6>
+</div>
+  </section>
+
+
+ 
+ <section id="banner">
+<h4>Repair services</h4>
+<h2>Up to <span style="color:#ef3636;">70%off</span> - All T-shirts and accessories</h2>
+<button id="b1" class="normal" onclick="window.location.href='shop.jsp'">
+Explore More
+</button>
+ </section>
+  
+  
+ <section class="fp" >
+    <h2  >New Arrivals</h2>
+    <p>summer collections new  modern designs</p>
+<div class="container">
+    
+   <%
+  if(!products.isEmpty())
+  {
+      for(int i=0;i<6;i++)
+   {%>
+      <div class="photo">
+          <img src="img/<%=products.get(i).getImage()%>" alt="photo">
+<div class="des">
+    <span ><%=products.get(i).getCategory()%></span>
+    <h5><%=products.get(i).getName()%></h5>
+    <div class="star">
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+    </div>
+    <h4>$ <%=products.get(i).getPrice()%> </h4>
+    <button class="btn" style=' background-color:#7CA982;border-radius: 10px;color:#fff' onclick="window.location.href='OrderNow?quantity=1&id=<%=products.get(i).getId()%>'">Buy now</button>
+<!--    <a class="btn" style=' background-color:#7CA982;border-radius: 10px;color:#fff' href="google.com">Buy now</a>-->
+</div>
+    <a id="ct" href="cart?id=<%=products.get(i).getId()%>"><i class="fa-solid fa-cart-shopping"></i></a>
+</div>
+    <%   }
+  }
+ %>
+
+</div>
+ </section>
+
+<section id="sm-banner" class="fp">
+    <div class="banner-box" id="bb1">
+        <h4>crazy deals</h4>
+        <h2>buy 1 get 1 free </h2>
+        <span>The best classic dress is on sale at cara</span>
+        <button class="btn">Learn More</button>
+    </div>
+    <div class="banner-box bb2" >
+        <h4>spring/summer</h4>
+        <h2>Upcoming Season</h2>
+        <span>The best classic dress is on sale at cara</span>
+        <button class="btn" onclick="window.location.href='shop.jsp'">Collection</button>
+    </div>
+</section>
+
+<section class="banner3">
+<div class="bb b-b1">
+    <h2>SEASONAL SALE</h2>
+    <h3>Winter collection-50% off</h3>
+</div>
+<div class="bb b-b2">
+    <h2>NEW FOOTWEAR COLLECTION</h2>
+    <h3>spring/summer 2022</h3>
+</div>
+<div class="bb b-b3">
+    <h2>T-SHIRTS</h2>
+    <h3>New Trendy prints</h3>
+</div>
+
+
+
+
+</section>
+
+<section id="newsletter" >
+    <div class="newstext">
+<h4 >Sign Up For Newsletter</h4>
+<p>Get e-mail updates about our latest shops and <span>special offers</span></p>
+
+    </div>
+    <div class="form">
+        <input type="text" placeholder=" Your E-mail address">
+        <button type="submit">sign up</button>
+    </div>
+
+</section>
+
+<footer class="footer">
+    <div class="col">
+<img id="lg"src="img/logo.png" alt="">
+<h4>Contact</h4>
+<p><strong>Address:</strong>Lorem ipsum dolor sit amet.</p>
+<p><strong>phone:</strong> +91 293756321</p>
+<p><strong>Hours:</strong>10:00-18:00 ,MON-FRI</p>
+    
+
+    <div class="follow">
+        <h4>Follow us</h4>
+        <div  class="icon">
+            <i class="fa-brands fa-facebook"></i>
+            <i class="fa-brands fa-twitter"></i>
+            <i class="fa-brands fa-instagram"></i>
+            <i class="fa-brands fa-pinterest"></i>
+            <i class="fa-brands fa-youtube"></i>
+        </div>
+
+    </div>
+</div>
+
+<div class="col"> 
+<h4>About</h4>
+<a href="#">About us</a>
+<a href="#">Delivery information</a>
+<a href="#">Privacy Policy</a>
+<a href="#">Terms & conditions</a>
+<a href="#">Contact us</a>
+</div>
+
+<div class="col"> 
+    <h4>My Account</h4>
+    <a href="#">Sign In</a>
+    <a href="#">View Cart</a>
+    <a href="#">My Wishlist</a>
+    <a href="#">Track My order</a>
+    <a href="#">Help</a>
+    </div>
+    
+<div class="col install">
+<h4>Install App</h4>
+<p>From App store or Google play</p>
+<div class="row">
+    <img src="img/app.jpg" alt="">
+    <img src="img/play.jpg" alt="">
+</div>
+<p>Secured Payment Gateways</p>
+<img src="img/pay.png" alt="">
+</div>
+
+<div class="copyright">
+    <p>© Lorem ipsum dolor sit amet consectetur.</p>
+</div>
+
+</footer>
+    <script src="script.js"></script>
+   
+</body>
+</html>
